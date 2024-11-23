@@ -1,0 +1,10 @@
+# .eslintignore
+
+# Ignore node_modules
+node_modules/
+
+# Ignore compiled TypeScript files
+*.js
+
+# Ignore specific files
+config.js

@@ -1,0 +1,10 @@
+# .husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+echo "Running lint-staged"
+npx --no-install lint-staged
+
+# Run check-types (type checking)
+echo "Running check-types"
+yarn check-types
