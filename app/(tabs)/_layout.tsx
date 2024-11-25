@@ -3,9 +3,8 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import {Link, Tabs} from 'expo-router';
 import {Pressable, StyleSheet} from 'react-native';
 
-import Colors from '@/constants/Colors';
-import {useColorScheme} from '@/components/useColorScheme';
 import {useClientOnlyValue} from '@/components/useClientOnlyValue';
+import Colors from '../theme/Colors';
 
 // Icon Component
 function TabBarIcon(props: {
@@ -17,18 +16,16 @@ function TabBarIcon(props: {
 
 // Main Component
 export default function TabLayout(): JSX.Element {
-  const colorScheme = useColorScheme();
-
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        tabBarActiveTintColor: Colors.highlight,
         headerShown: useClientOnlyValue(false, true),
       }}>
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
+          title: 'Characters',
           tabBarIcon: ({color}: {color: string}) => (
             <TabBarIcon name="code" color={color} />
           ),
@@ -42,7 +39,7 @@ export default function TabLayout(): JSX.Element {
                     style={
                       pressed ? styles.pressedOpacity : styles.normalOpacity
                     }
-                    color={Colors[colorScheme ?? 'light'].text}
+                    color={Colors.text}
                   />
                 )}
               </Pressable>
@@ -51,9 +48,18 @@ export default function TabLayout(): JSX.Element {
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="locations"
         options={{
-          title: 'Tab Two',
+          title: 'Locations',
+          tabBarIcon: ({color}: {color: string}) => (
+            <TabBarIcon name="code" color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="episodes"
+        options={{
+          title: 'Episodes',
           tabBarIcon: ({color}: {color: string}) => (
             <TabBarIcon name="code" color={color} />
           ),

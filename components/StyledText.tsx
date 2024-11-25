@@ -1,5 +1,5 @@
-import {Text, TextProps} from './Themed';
+import {Text} from 'react-native';
 
-export function MonoText(props: TextProps): JSX.Element {
-  return <Text {...props} style={props.style} />;
+export function MonoText(): JSX.Element {
+  return <Text />;
 }
