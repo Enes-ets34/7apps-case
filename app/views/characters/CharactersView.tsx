@@ -8,6 +8,7 @@ export default function CharactersView({
   return (
     <View className={charactersStyles.container}>
       <Text className="text-2xl">{name}</Text>
+      <Text className="text-2xl">{process.env.EXPO_PUBLIC_API_URL}</Text>
       <View className="bg-primary border-primary p-5 border rounded-borderRadiusXL">
         <Text className="text-4xl text-indigo">First Container</Text>
       </View>

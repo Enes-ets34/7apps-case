@@ -6,6 +6,7 @@ import {useEffect} from 'react';
 import 'react-native-reanimated';
 import '../global.css';
 import {verifyInstallation} from 'nativewind';
+import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
 export {ErrorBoundary} from 'expo-router';
 
 export const unstable_settings = {
@@ -35,12 +36,16 @@ export default function RootLayout(): JSX.Element {
 }
 
 function RootLayoutNav(): JSX.Element {
+  const queryClient = new QueryClient();
+
   verifyInstallation();
 
   return (
-    <Stack>
-      <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-      <Stack.Screen name="modal" options={{presentation: 'modal'}} />
-    </Stack>
+    <QueryClientProvider client={queryClient}>
+      <Stack>
+        <Stack.Screen name="(tabs)" options={{headerShown: false}} />
+        <Stack.Screen name="modal" options={{presentation: 'modal'}} />
+      </Stack>
+    </QueryClientProvider>
   );
 }
