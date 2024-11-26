@@ -1,23 +1,50 @@
-import {Text, View} from 'react-native';
+import React, {useCallback} from 'react';
+import {View} from 'react-native';
+import {useCharacterStore} from '@/app/store/character/characterStore';
+import {SelectedItem} from '@/app/store/types';
+import MultiselectDropdown from '@/components/multi-select-dropdown/MultiSelectDropdown';
 import {CharactersProps} from './characters.types';
 import {charactersStyles} from './characters.styles';
 
-export default function CharactersView({
-  name = '',
-}: CharactersProps): JSX.Element {
+const CharactersView = ({
+  charactersData,
+  inputKey,
+  setInputKey,
+  onEndReached,
+  hasNextPage,
+}: CharactersProps): JSX.Element => {
+  const {selectedCharacterList, addCharacter, removeCharacter} =
+    useCharacterStore();
+
+  const handleSelectCharacter = useCallback(
+    (character: SelectedItem) => {
+      addCharacter(character);
+    },
+    [addCharacter],
+  );
+
+  const handleDeselectCharacter = useCallback(
+    (character: SelectedItem) => {
+      removeCharacter(character.id);
+    },
+    [removeCharacter],
+  );
+
   return (
     <View className={charactersStyles.container}>
-      <Text className="text-2xl">{name}</Text>
-      <Text className="text-2xl">{process.env.EXPO_PUBLIC_API_URL}</Text>
-      <View className="bg-primary border-primary p-5 border rounded-borderRadiusXL">
-        <Text className="text-4xl text-indigo">First Container</Text>
-      </View>
-      <View className="bg-secondary border border-secondary p-5 rounded-xl">
-        <Text className="text-4xl text-text">Second Container</Text>
-      </View>
-      <View className="bg-accent border border-accent p-5 rounded-xl">
-        <Text className="text-4xl text-indigo">Third Container</Text>
-      </View>
+      <MultiselectDropdown
+        data={charactersData as SelectedItem[]}
+        selectedItems={selectedCharacterList}
+        inputValue={inputKey as string}
+        placeholder="Search for characters..."
+        hasNextPage={hasNextPage as boolean}
+        onSelectItem={handleSelectCharacter}
+        setInputValue={setInputKey}
+        onDeselectItem={handleDeselectCharacter}
+        onEndReached={onEndReached}
+      />
     </View>
   );
-}
+};
+
+export default CharactersView;

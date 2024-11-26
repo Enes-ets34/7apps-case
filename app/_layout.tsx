@@ -7,6 +7,10 @@ import 'react-native-reanimated';
 import '../global.css';
 import {verifyInstallation} from 'nativewind';
 import {QueryClient, QueryClientProvider} from '@tanstack/react-query';
+import {StyleSheet, View} from 'react-native';
+import LottieView from 'lottie-react-native';
+import Loading from '@/components/loading/Loading';
+import {useLoadingStore} from './store/loading/loadingStore';
 export {ErrorBoundary} from 'expo-router';
 
 export const unstable_settings = {
@@ -20,28 +24,47 @@ export default function RootLayout(): JSX.Element {
     SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
     ...FontAwesome.font,
   });
+
   useEffect(() => {
-    if (error) throw error;
+    if (error) {
+      console.error('Font yüklenirken hata oluştu:', error);
+      SplashScreen.hideAsync();
+    }
   }, [error]);
 
   useEffect(() => {
     if (loaded) {
-      SplashScreen.hideAsync();
+      const timer = setTimeout(() => {
+        SplashScreen.hideAsync();
+      }, 3000);
+      return () => clearTimeout(timer);
     }
   }, [loaded]);
 
-  if (!loaded) return <></>;
+  if (!loaded) {
+    return (
+      <View style={styles.container}>
+        <LottieView
+          source={require('../assets/animations/loading.json')}
+          autoPlay
+          loop
+          style={styles.lottie}
+        />
+      </View>
+    );
+  }
 
   return <RootLayoutNav />;
 }
 
 function RootLayoutNav(): JSX.Element {
   const queryClient = new QueryClient();
-
+  const {isLoading} = useLoadingStore();
   verifyInstallation();
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Loading isLoading={isLoading} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{headerShown: false}} />
         <Stack.Screen name="modal" options={{presentation: 'modal'}} />
@@ -49,3 +72,14 @@ function RootLayoutNav(): JSX.Element {
     </QueryClientProvider>
   );
 }
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  lottie: {
+    width: 300,
+    height: 300,
+  },
+});

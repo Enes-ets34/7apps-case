@@ -1,21 +1,22 @@
-import {useQuery, UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
 import httpRequest from '@/app/api/httpRequest';
 import {LocationResponse} from './location.types';
 
-export const useLocationQuery = (): UseQueryResult => {
-  return useQuery<LocationResponse, Error>({
-    queryKey: ['location'],
-    queryFn: async () => {
-      const response = await httpRequest.get<LocationResponse>('/location');
+export const useLocationInfiniteQuery = (searchKey: string) => {
+  return useInfiniteQuery<LocationResponse, Error>({
+    queryKey: ['location', searchKey],
+    queryFn: async ({pageParam = 1}) => {
+      const response = await httpRequest.get<LocationResponse>(
+        `/location?page=${pageParam}&name=${searchKey}`,
+      );
       return response.data;
     },
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 60,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    onError: (error: string) => {
-      console.error('Query Error:', error);
+    getNextPageParam: lastPage => {
+      const nextUrl = lastPage.info.next;
+      return nextUrl ? new URL(nextUrl).searchParams.get('page') : undefined;
     },
-  } as UseQueryOptions<LocationResponse, Error>);
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 };

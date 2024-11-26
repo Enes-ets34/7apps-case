@@ -1,21 +1,22 @@
-import {useQuery, UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import httpRequest from '@/app/api/httpRequest';
-import {CharacterResponse} from './chracter.types';
+import { CharacterResponse } from './chracter.types';
 
-export const useCharacterQuery = (): UseQueryResult => {
-  return useQuery<CharacterResponse, Error>({
-    queryKey: ['character'],
-    queryFn: async () => {
-      const response = await httpRequest.get<CharacterResponse>('/character');
+export const useCharacterInfiniteQuery = (searchKey: string) => {
+  return useInfiniteQuery<CharacterResponse, Error>({
+    queryKey: ['character', searchKey],
+    queryFn: async ({ pageParam = 1 }) => {
+      const response = await httpRequest.get<CharacterResponse>(
+        `/character?page=${pageParam}&name=${searchKey}`
+      );
       return response.data;
     },
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 60,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    onError: (error: string) => {
-      console.error('Query Error:', error);
+    getNextPageParam: (lastPage) => {
+      const nextUrl = lastPage.info.next;
+      return nextUrl ? new URL(nextUrl).searchParams.get('page') : undefined;
     },
-  } as UseQueryOptions<CharacterResponse, Error>);
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 };

@@ -1,21 +1,22 @@
-import {useQuery, UseQueryOptions, UseQueryResult} from '@tanstack/react-query';
+import {useInfiniteQuery} from '@tanstack/react-query';
 import httpRequest from '@/app/api/httpRequest';
 import {EpisodeResponse} from './episode.types';
 
-export const useEpisodeQuery = (): UseQueryResult => {
-  return useQuery<EpisodeResponse, Error>({
-    queryKey: ['episode'],
-    queryFn: async () => {
-      const response = await httpRequest.get<EpisodeResponse>('/episode');
+export const useEpisodeInfiniteQuery = (searchKey: string) => {
+  return useInfiniteQuery<EpisodeResponse, Error>({
+    queryKey: ['episode', searchKey],
+    queryFn: async ({pageParam = 1}) => {
+      const response = await httpRequest.get<EpisodeResponse>(
+        `/episode?page=${pageParam}&name=${searchKey}`,
+      );
       return response.data;
     },
-    staleTime: 1000 * 60 * 5,
-    cacheTime: 1000 * 60 * 60,
-    refetchOnWindowFocus: false,
-    refetchInterval: false,
-    refetchOnReconnect: false,
-    onError: (error: string) => {
-      console.error('Query Error:', error);
+    getNextPageParam: lastPage => {
+      const nextUrl = lastPage.info.next;
+      return nextUrl ? new URL(nextUrl).searchParams.get('page') : undefined;
     },
-  } as UseQueryOptions<EpisodeResponse, Error>);
+    initialPageParam: 1,
+    staleTime: 1000 * 60 * 5,
+    refetchOnWindowFocus: false,
+  });
 };
