@@ -43,9 +43,28 @@ const MultiselectDropdown = ({
       item,
     }));
   }, [data]);
+  const highlightText = (text: string): JSX.Element => {
+    if (!inputValue) return <Text>{text}</Text>;
+
+    const parts = text.split(new RegExp(`(${inputValue})`, 'gi'));
+
+    return (
+      <>
+        {parts.map((part, index) =>
+          part.toLowerCase() === inputValue.toLowerCase() ? (
+            <Text key={index} style={{fontWeight: 'bold'}}>
+              {part}
+            </Text>
+          ) : (
+            <Text key={index}>{part}</Text>
+          ),
+        )}
+      </>
+    );
+  };
   const renderItemContent = (item: RenderItem): JSX.Element => (
     <View className="p-2">
-      <Text className="text-xs">{item.title}</Text>
+      <Text className="text-xs">{highlightText(item?.title as string)}</Text>
       <Text className="text-xs">{item.description}</Text>
     </View>
   );

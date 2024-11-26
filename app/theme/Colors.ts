@@ -2,6 +2,7 @@ const Colors = {
   primary: '#00bfae',
   secondary: '#f2cb2f',
   background: '#2d2d2d',
+  overlay: '#2d2d2d80',
   text: '#5d2e7e',
   accent: '#e77a2f',
   dark: '#004d2c',

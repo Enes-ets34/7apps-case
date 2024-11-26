@@ -1,6 +1,6 @@
 export const styles = {
   flatList:
-    'absolute top-full left-0 right-0 mt-2 h-[300px] z-50 bg-slate-100 border border-gray-300 rounded-lg overflow-y-auto shadow-lg',
+    'absolute top-full left-0 right-0 mt-2 max-h-[300px] z-50 bg-slate-100 border border-gray-300 rounded-lg overflow-y-auto shadow-lg',
   itemWrapper:
     'p-2 pe-4 bg-slate-100 flex flex-wrap border border-slate-400 rounded-borderRadiusXL',
   deleteButton:

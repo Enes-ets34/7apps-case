@@ -3,7 +3,6 @@ import {useCharacterInfiniteQuery} from '../queries/character/character.query';
 import {useLoadingStore} from '../store/loading/loadingStore';
 import CharactersView from '../views/characters/CharactersView';
 import {Character} from '../queries/character/chracter.types';
-import {View} from 'react-native';
 
 export default function CharactersScreen(): JSX.Element {
   const [inputKey, setInputKey] = useState<string>('');
@@ -43,15 +42,12 @@ export default function CharactersScreen(): JSX.Element {
   };
 
   return (
-    <View
-      className="">
-      <CharactersView
-        inputKey={inputKey}
-        setInputKey={setInputKey}
-        charactersData={charactersData}
-        onEndReached={handleLoadMore}
-        hasNextPage={hasNextPage}
-      />
-    </View>
+    <CharactersView
+      inputKey={inputKey}
+      setInputKey={setInputKey}
+      charactersData={charactersData}
+      onEndReached={handleLoadMore}
+      hasNextPage={hasNextPage}
+    />
   );
 }

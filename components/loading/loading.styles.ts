@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
       height: '100%',
       justifyContent: 'center',
       alignItems: 'center',
-      backgroundColor: Colors.background,
+      backgroundColor: Colors.overlay,
       zIndex: 999,
     },
     lottie: {
