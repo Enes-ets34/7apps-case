@@ -11,6 +11,7 @@ import {StyleSheet, View} from 'react-native';
 import LottieView from 'lottie-react-native';
 import Loading from '@/components/loading/Loading';
 import {useLoadingStore} from './store/loading/loadingStore';
+import Toast from '@/components/toast/Toast';
 export {ErrorBoundary} from 'expo-router';
 
 export const unstable_settings = {
@@ -64,6 +65,7 @@ function RootLayoutNav(): JSX.Element {
 
   return (
     <QueryClientProvider client={queryClient}>
+      <Toast />
       <Loading isLoading={isLoading} />
       <Stack>
         <Stack.Screen name="(tabs)" options={{headerShown: false}} />
