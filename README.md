@@ -46,8 +46,8 @@ Requirements:
 
 ## Android View 🤖
 
- <img width="500" height="600" src="./assets/android.gif" alt="Android view" />
+ <img width="400" height="600" src="./assets/android.gif" alt="Android view" />
 
 ## IOS View 🍎
 
- <img width="500" height="600" src="./assets/ios.gif" alt="IOS view" />
+ <img width="400" height="600" src="./assets/ios.gif" alt="IOS view" />
